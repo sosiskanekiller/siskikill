@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		@font-face {
+			font-family: 'blogger-sans';
+			src: url('fonts/bloggerm.ttf') format('truetype');
+		}
+
+		html {
+			height: 100%;
+		}
+
+		body {
+			padding: 0;
+			margin: 0;
+			height: 100%;
+			background-color: #554455;
+			background-image: url(images/bg.png);
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		#main-text {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color: #e41c1c;
+			font-family: 'blogger-sans';
+			font-size: 72pt; /* Increase font size */
+		}
+
+		#loading {
+			position: absolute;
+			top: 50%;
+			margin: -200px 8.5%;
+			height: 400px;
+			width: 83%;
+			border-bottom: dashed 2px rgba(0,0,0, 0.35);
+		}
+
+		#car {
+			width: 64px;
+			height: 64px;
+			position: absolute;
+			left: 1%;
+			bottom: 0;
+		}
+
+		#city {
+			width: 96px;
+			height: 96px;
+			position: absolute;
+			right: 1%;
+			bottom: 0;
+		}
+
+		#hint {
+			margin: auto;
+			padding-top: 25px;
+			text-align: center;
+			color: #EEEEEE;
+			font-family: 'blogger-sans';
+			font-size: 18pt;
+			max-width: 800px;
+			transition: opacity 0.5s;
+			opacity: 1;
+		}
+
+		#hint2 {
+			position: fixed;
+			bottom: 20px;
+			left: 30px;
+			color: #EEEEEE;
+			font-family: 'blogger-sans';
+			font-size: 18pt;
+			margin: 0;
+			animation-name: softblink;
+			animation-duration: 3s;
+			animation-iteration-count: infinite;
+		}
+
+		@keyframes softblink {
+			0% { opacity: 1 }
+			50% { opacity: 0.35 }
+			90% { opacity: 1 }
+		}
+
+		#hint.fade {
+			opacity: 0;
+		}
+	</style>
+</head>
+<body>
+	<div id="main-text">Туси На Руси 18+ (VIP FREE)</div>
+	<div id="loading">
+		<img src="images/city1.png" id="city">
+		<img src="images/bus.png" id="car">
+	</div>
+	<p id="hint" class="">Если ты хочешь помочь серверу скинь деньги</p>
+	<p id="hint2">Едим на пенсию...</p>
+
+	<script>
+		if (Math.random() > 0.98) document.getElementById('car').src = 'https://cdn.octothorp.team/icons/color64/car' + Math.floor(Math.random() * 3 + 1) + '.png'
+
+		function shuffle(a) {
+			var j, x, i
+			for (i = a.length - 1; i > 0; i--) {
+				j = Math.floor(Math.random() * (i + 1))
+				x = a[i]
+				a[i] = a[j]
+				a[j] = x
+			}
+			return a
+		}
+
+		var hints = shuffle([
+			'сервер спонсируют АКАДЕМИЯ ДУШЕВНЫХ СТАРИЧКОВ 18+ ©',
+			'на сервере ДЕДУШКИ В CS 1.6 : ЖЕНСКИЙ ВЗВОД ©™ был замечен вихухоль',
+			'на сервере █ ЖEHСКИЙ ЭПИЦЕНТР █ НОЧНОЙ VIP █ играл отец романиуза чтобы найти свою жену',
+		])
+
+		var curHintID = -1
+		function nextHint() {
+			var el = document.getElementById('hint')
+			el.classList.add('fade')
+			setTimeout(function() {
+				curHintID ++
+				if (curHintID >= hints.length) curHintID = 0
+				el.innerHTML = hints[curHintID]
+				el.classList.remove('fade')
+			}, 500)
+		}
+		nextHint()
+		setInterval(nextHint, 10000)
+
+		function clamp(num){
+			return Math.min(Math.max(num, 0), 1)
+		}
+
+		var left = 1, stLeft = 5, filesTotal, wsTotal, filesLeft, wsLeft, finished;
+		function updateProgress() {
+			if (!filesLeft || !wsLeft) return
+			left = finished ? 0 : clamp(stLeft / 5) * 0.5 + clamp(filesLeft / filesTotal) * 0.1 + clamp(wsLeft / wsTotal) * 0.4
+		}
+
+		function SetStatusChanged(status){
+			if (status == 'Sending client info...'){
+				finished = true
+				// document.getElementById('hint').innerHTML = 'Почти на месте...'
+			} else if (status.search(/Extracting|Loading/i) == -1) stLeft = Math.max(stLeft - 1, 0)
+			else wsLeft --
+
+			updateProgress()
+		}
+
+		// total server files
+		function SetFilesTotal(files){
+			if (!filesTotal){
+				filesTotal = files
+				filesLeft = files
+				updateProgress()
+			}
+		}
+
+		// total workshop items
+		function SetFilesNeeded(ws){
+			if (!wsTotal){
+				wsTotal = ws
+				wsLeft = ws
+				updateProgress()
+			}
+		}
+
+		function DownloadingFile(name){
+			filesLeft --
+			updateProgress()
+		}
+
+		var val = 1
+		setInterval(function(){
+			if (val == left) return
+
+			val = Math.max(val - Math.max((val - left) * 0.01, 0.00002), 0)
+			document.getElementById('car').style.left = (93 * (1 - val)) + '%'
+		}, 16)
+	</script>
+
+<script>(function(){var js = "window['__CF$cv$params']={r:'824e6191a8970a50',t:'MTY5OTc4Nzk3OC45OTkwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe><script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v84a3a4012de94ce1a686ba8c167c359c1696973893317" data-cf-beacon="{" rayid":"824e6191a8970a50","r":1,"version":"2023.10.0","token":"24f9e9d7b7014b868fc44b4f0b74bc43"}"="" crossorigin="anonymous"></script>
+
+
+</body></html>
